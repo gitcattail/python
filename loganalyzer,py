@@ -1,0 +1,40 @@
+import sys
+def statistics(open_LOGFILE):
+    COUNT_ERROR = 0
+    COUNT_NOTICE = 0
+    for line in (open_LOGFILE):
+        COUNT_ERROR += line.count("[error]")
+        COUNT_NOTICE += line.count("[notice]")
+    print(f"errors {COUNT_ERROR}\nnotice {COUNT_NOTICE}")
+def error(open_LOGFILE):
+    ERROR_FOUND = False
+    for line in (open_LOGFILE):
+        if "[error]" in line:
+            ERROR_FOUND = True
+            print(line[1:20].strip(), line[35:].strip())
+    if not ERROR_FOUND:
+        sys.exit("I must be blind...I didnt find any [error]")
+def notice(open_LOGFILE):
+    NOTICE_FOUND = False
+    for line in (open_LOGFILE):
+        if "[notice]" in line:
+            NOTICE_FOUND = True
+            print(line[1:20].strip(), line[36:].strip())
+    if not NOTICE_FOUND:
+        sys.exit("I must be blind...I didnt find any [notice]")
+def main():
+    if len(sys.argv) < 3:
+        sys.exit("ALL WORK AND NO PLAY MAKES JACK A DULL BOY\n"*30)
+    LOGFILE = sys.argv[1]
+    DOTHIS = sys.argv[2]
+    with open(LOGFILE, 'r', encoding='utf-8') as open_LOGFILE:
+        if DOTHIS == "statistics":
+            statistics(open_LOGFILE)
+        elif DOTHIS == "error":
+            error(open_LOGFILE)
+        elif DOTHIS == "notice":
+            notice(open_LOGFILE)
+        else:
+            sys.exit("ALL WORK AND NO PLAY MAKES JACK A DULL BOY\n"*30)
+if __name__ == '__main__':
+    main()
